@@ -3,17 +3,17 @@ let foodScore = new Array();
 var input;
 var index;
 
-window.onload = function() {
-    loadPage();
-};
+var requirejs = require(['https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js'], function (requirejs) {});
 
-function loadPage() {
-    getData();
-}
+window.onload = function() {
+    document.getElementById("submit").onclick = function fun() {
+        onSubmit();
+    }
+};
 
 function getData() {
     const jsonName = "./test.json";
-    const data = require(jsonName);
+    const data = requirejs(jsonName);
     for (const recipe of data) {
         const ingredients = [];
         for (const ingredient of recipe.ingredients) {
@@ -27,20 +27,35 @@ function onSubmit() {
     index = 0;
     input = document.getElementById("ingredients").textContent;
     input.replace(/\s/g, '');
-    checkFoods();
-    foodScore.sort(function(a, b) {
-        return a[1] - b[1];
+
+    $.ajax({
+        type: "POST",
+        url: "https:/inputdata",
+        data: { "input": input },
+        dataType: "json"
     });
+    $.ajax({
+        type: "POST",
+        url: "./recipe_api.py",
+        data: { param: input },
+    });
+    $(document).ajaxSuccess(function(){
+        getData();
+        checkFoods();
+        foodScore.sort(function(a, b) {
+            return a[1] - b[1];
+        });
 
-    while (index < 10) {
-        let info = document.createElement("p");
-        info.innerText = foodScore[index][0] + " " + (foodScore[index][1].toPrecision(3)*100) + "%";
-        document.body.appendChild(info);
-        index++;
-    }
+        while (index < 10) {
+            let info = document.createElement("p");
+            info.innerText = foodScore[index][0] + " " + (foodScore[index][1].toPrecision(3)*100) + "%";
+            document.body.appendChild(info);
+            index++;
+        }
 
-    let getMoreButton = document.getElementById("getMore");
-    getMoreButton.hidden = false;
+        let getMoreButton = document.getElementById("getMore");
+        getMoreButton.hidden = false;
+    });
 }
 
 function checkFoods() {
