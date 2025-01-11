@@ -12,8 +12,11 @@ window.onload = function() {
 };
 
 function getData() {
-    const jsonName = "./test.json";
-    const data = requirejs(jsonName);
+    var data;
+    readTextFile("https://github.com/daiyichen27/SB-Hacks-2025/blob/main/test.json", function(text){
+        data = JSON.parse(text);
+    });
+    console.log(data);
     for (const recipe of data) {
         const ingredients = [];
         for (const ingredient of recipe.ingredients) {
@@ -34,28 +37,25 @@ function onSubmit() {
         data: { "input": input },
         dataType: "json"
     });
+    console.log('input posted');
     $.ajax({
-        type: "POST",
-        url: "./recipe_api.py",
-        data: { param: input },
+        url: "https://github.com/daiyichen27/SB-Hacks-2025/blob/main/recipe_api.py",
     });
-    $(document).ajaxSuccess(function(){
-        getData();
-        checkFoods();
-        foodScore.sort(function(a, b) {
-            return a[1] - b[1];
-        });
-
-        while (index < 10) {
-            let info = document.createElement("p");
-            info.innerText = foodScore[index][0] + " " + (foodScore[index][1].toPrecision(3)*100) + "%";
-            document.body.appendChild(info);
-            index++;
-        }
-
-        let getMoreButton = document.getElementById("getMore");
-        getMoreButton.hidden = false;
+    getData();
+    checkFoods();
+    foodScore.sort(function(a, b) {
+        return a[1] - b[1];
     });
+
+    while (index < 10) {
+        let info = document.createElement("p");
+        info.innerText = foodScore[index][0] + " " + (foodScore[index][1].toPrecision(3)*100) + "%";
+        document.body.appendChild(info);
+        index++;
+    }
+
+    let getMoreButton = document.getElementById("getMore");
+    getMoreButton.hidden = false;
 }
 
 function checkFoods() {
@@ -82,4 +82,16 @@ function printMore() {
             index++;
         }
     }
+}
+
+function readTextFile(file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+    }
+    rawFile.send(null);
 }
