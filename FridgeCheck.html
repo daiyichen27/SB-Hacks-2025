@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>FridgeCheck</title>
+    <link href="https://fonts.cdnfonts.com/css/apple-chancery" rel="stylesheet">
     <style>
      h1 {        
         margin: 0;
@@ -13,11 +14,15 @@
         color:gold;
         text-align: center;
         font-size:100px;
+        font-family: 'Apple Chancery';
+        text-shadow:goldenrod 2px 5px;
+        border: 10px inset silver;
      }  
            /* Set the margin and padding of the body to 0 */
     body {
         margin: 0;
         padding: 0;
+        background-color: skyblue;
       }
 
       /* Set the margin and padding of the header to 0 */
@@ -27,13 +32,14 @@
 
   <body>
     <h1>FridgeCheck</h1>
-    <p style="text-align: center;" href="https://www.freeiconspng.com/img/9520" title="Meow"><img src="https://www.freeiconspng.com/uploads/fridge-icon-30.png" width="350" alt="Fridge Save Icon Format"/></p>
-    <p>Enter ingredients seprated by a comma</p>
-    <form>
-        <label for="ingredients">Food items:</label>
+    <p style="text-align: center;" href="https://www.freeiconspng.com/img/9520" title="Meow"><img src="https://www.freeiconspng.com/uploads/fridge-icon-30.png" width="400" alt="Fridge Save Icon Format"/></p>
+    <p style="text-align: center; font-size: 20px;"> <strong> Enter ingredients separated by a comma: </strong></p>
+    <form style="text-align: center;">
+        <label for="ingredients"></label>
         <input type="text" id="ingredients" name="ingredients" multiple><br><br>
-        <input type="submit" value="Submit">
+        <input type="button" value="SUBMIT" style="font-weight: bold;">
       </form>
+      <button hidden id="showMore">Show More</button>
   </body>
 </HEAD>
 
