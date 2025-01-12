@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>FridgeCheck</title>
+    <link href="https://fonts.cdnfonts.com/css/apple-chancery" rel="stylesheet">
+    <style>
+      h1 {
+        margin: 0;
+        padding: 0;
+        height: 20vh;
+        background-image: linear-gradient(to bottom, navy,  rgb(113, 131, 223));
+        color: gold;
+        text-align: center;
+        font-size: 100px;
+        font-family: 'Apple Chancery';
+        text-shadow: goldenrod 2px 5px;
+        border: 10px inset rgb(0, 0, 0);
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: skyblue;
+      }
+
+      textarea {
+        width: 400px; /* Wider textbox */
+        min-height: 20px; /* Minimum height */
+        padding: 8px;
+        box-sizing: border-box;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 16px;
+        resize: none; /* Prevent manual resizing */
+        overflow: hidden; /* Prevent scrollbars */
+      }
+
+      input[type="button"] {
+        font-weight: bold;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      p img {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>FridgeCheck</h1>
+      <p style="text-align: center;" href="https://www.freeiconspng.com/img/9520" title="Meow">
+        <img src="https://media.tenor.com/mZBn3YLcL4kAAAAM/eating-viralhog.gif" width="150" alt="Fridge Save Icon Format" />
+        <img src="https://www.freeiconspng.com/uploads/fridge-icon-30.png" width="400" alt="Fridge Save Icon Format" />
+        <img src="https://media.tenor.com/mZBn3YLcL4kAAAAM/eating-viralhog.gif" width="150" alt="Fridge Save Icon Format" style="transform: scaleX(-1);" />
+      </p>
+    <strong> <p style="text-align: center; font-size:20px;"> Welcome to FridgeCheck! </p> </strong>
+    </strong> <p style="text-align: center; font-size:20px;"> Find any ingredients you have and we will provide curated, delicious dishes. </p> </strong>
+    <form style="text-align: center;">
+      <label for="ingredients"></label>
+      <textarea id="ingredients" name="ingredients" placeholder="Enter ingredients separated by a comma:"></textarea>
+      <br />
+      <input type="button" value="SUBMIT" id="submit">
+    </form>
+
+    <input type="button" hidden id="showMore" value="Show More"></button>
+
+    <script>
+      // Automatically resize the textarea based on its content
+      const textarea = document.getElementById('ingredients');
+      textarea.addEventListener('input', () => {
+        textarea.style.height = 'auto'; // Reset height to calculate new height
+        textarea.style.height = `${textarea.scrollHeight}px`; // Adjust height to content
+      });
+      // Initialize size based on placeholder or initial content
+      textarea.dispatchEvent(new Event('input'));
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" type="text/javascript"></script>
+    <py-script src="./recipe_api_old.py"></py-script>
+    <script type="text/javascript" src="./search.js"></script>
+  </body>
+</html>
