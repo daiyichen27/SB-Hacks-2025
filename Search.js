@@ -11,6 +11,12 @@ window.onload = function() {
         onSubmit();
     }
 };
+<script>
+    fetch("https://frontend.slacker.dev/fridge/test.json")
+        .then()
+
+</script>
+
 
 async function getData() {
     const url = 'https://raw.githubusercontent.com/daiyichen27/SB-Hacks-2025/refs/heads/main/test.json';
