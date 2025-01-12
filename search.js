@@ -32,7 +32,7 @@ async function onSubmit() {
         }
     });
     for (const recipe of data) {
-        let perc = recipe.usedIngredientCount/(recipe.usedIngredientCount + recipe.missedIngredientCount);
+        let perc = recipe.usedIngredientCount*1.0/(recipe.usedIngredientCount + recipe.missedIngredientCount);
         foodScore.push([recipe.title, perc]);
     }
     foodScore.sort(function(a, b) {
