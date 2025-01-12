@@ -28,17 +28,13 @@ async function onSubmit() {
         // http://127.0.0.1:5000/fridgecheck
         data: {'ingredients': input},
         success: function(jsonData) {
-            getData(jsonData);
+            getData(jsonData.result);
         }
     });
-    for (const recipe of data.recipes) {
-        const ingredients = new Array();
-        for (const ingredient of recipe.ingredients) {
-            ingredients.push(ingredient.name);
-        }
-        recipes.set(recipe.title, ingredients);
+    for (const recipe of data) {
+        let perc = recipe.usedIngredientCount/(recipe.usedIngredientCount + recipe.missedIngredientCount);
+        foodScore.push([recipe.title, perc]);
     }
-    checkFoods();
     foodScore.sort(function(a, b) {
         return b[1] - a[1];
     });
