@@ -32,20 +32,32 @@ class RateLimitedRequester:
         
         response = requests.get(url, headers=headers, params=formatted_params)
 
+        # return response.json()
         return response.json()
 
 if __name__ == '__main__':
     new_request = RateLimitedRequester()
-    ingredients = []
-    with open('input.txt', 'r') as file:
-        for line in file:
-            # Remove trailing newline and split on comma
-            row = line.rstrip('\n').split(',') 
-            for word in row:
-                ingredients.extend(row)
-    print(ingredients)
-    params = {"ingredients": "apples,flour,sugar", "number": "2"}
-    print(new_request.retrieve(params))
+    
+    input_url = "https://inputdata"
+    user_input = requests.get(input_url)
 
+    if user_input.status_code == 200:
+        print(user_input.text)
+    else:
+        print(f"Error: {user_input.status_code}")
+
+    list_of_ingredients = user_input.split(",")
+    ingredients_value = ", ".join(list_of_ingredients)
+
+    params = {"ingredients": ingredients_value, "number": "10"}
+
+    try:
+        data = new_request.retrieve(params)
+        with open("data.json", "w") as file:
+            json.dump(data, file)
+    except IOError as e:
+        print(f"An error occurred: {e}")
+    
+    print(new_request.retrieve(params))
 
 # print(response.json())

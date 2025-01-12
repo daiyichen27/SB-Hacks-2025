@@ -11,6 +11,12 @@ window.onload = function() {
         onSubmit();
     }
 };
+<script>
+    fetch("https://frontend.slacker.dev/fridge/test.json")
+        .then()
+
+</script>
+
 
 async function getData() {
     const url = 'https://frontend.slacker.dev/fridge/test.json';
