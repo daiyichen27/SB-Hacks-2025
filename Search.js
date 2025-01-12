@@ -1,5 +1,6 @@
 let recipes = new Map();
 let foodScore = new Array();
+var data;
 var input;
 var index;
 
@@ -11,21 +12,14 @@ window.onload = function() {
     }
 };
 
-function getData() {
-    var jsonData;
-    $.getJSON('https://github.com/daiyichen27/SB-Hacks-2025/blob/main/test.json', function(jsonData) {
+async function getData() {
+    const url = 'https://raw.githubusercontent.com/daiyichen27/SB-Hacks-2025/refs/heads/main/test.json';
+    data = $.getJSON(url, function() {
+        console.log("success");
     });
-    var data = JSON.parse(jsonData);
-    for (const recipe of data) {
-        const ingredients = [];
-        for (const ingredient of recipe.ingredients) {
-            ingredients.push(ingredient.name.split(' ').join('').toLowerCase());
-        }
-        recipes.set(recipe.title, ingredients);
-    }
 }
 
-function onSubmit() {
+async function onSubmit() {
     index = 0;
     input = document.getElementById("ingredients").value;
     input.replace(/\s/g, '');
@@ -37,9 +31,16 @@ function onSubmit() {
         dataType: "json"
     });
     $.ajax({
-        url: "https://github.com/daiyichen27/SB-Hacks-2025/blob/main/recipe_api.py",
+        url: "https://github.com/daiyichen27/SB-Hacks-2025/blob/main/recipe_api.py?raw=true",
     });
-    getData();
+    await getData();
+    for (const recipe of data) {
+        const ingredients = new Array();
+        for (const ingredient of recipe.ingredients) {
+            ingredients.push(ingredient.name);
+        }
+        recipes.set(recipe.title, ingredients);
+    }
     checkFoods();
     foodScore.sort(function(a, b) {
         return a[1] - b[1];
