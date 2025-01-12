@@ -22,21 +22,19 @@ async function getData() {
 async function onSubmit() {
     index = 0;
     input = document.getElementById("ingredients").value;
-    input.replace(/\s/g, '');
+    input = input.replace(/[\s\n]/g, '');
+    console.log(input);
 
-    $.ajax({
+    await $.ajax({
         type: "POST",
         url: "https://inputdata",
-        data: { "input": input },
-        dataType: "json"
+        data: input,
+        dataType: "text"
     });
-    /*
-    $.ajax({
-        url: "https://github.com/daiyichen27/SB-Hacks-2025/blob/main/recipe_api.py?raw=true",
+    await $.ajax({
+        url: "./recipe_api.py",
     });
-    */
     await getData();
-    console.log(data);
     for (const recipe of data.recipes) {
         const ingredients = new Array();
         for (const ingredient of recipe.ingredients) {
@@ -49,19 +47,20 @@ async function onSubmit() {
         return b[1] - a[1];
     });
 
-    while (index < 10) {
+    while (index < foodScore.length && index < 10) {
         let info = document.createElement("p");
         info.innerText = foodScore[index][0] + " " + (foodScore[index][1].toPrecision(3)*100) + "%";
         document.body.appendChild(info);
         index++;
     }
 
-    let getMoreButton = document.getElementById("getMore");
-    getMoreButton.hidden = false;
+    let showMoreButton = document.getElementById("showMore");
+    showMoreButton.hidden = false;
 }
 
 function checkFoods() {
     var fridge = input.split(',');
+    console.log(fridge);
     for (const key of recipes.keys()) {
         var required = recipes.get(key);
         var count = 0;
