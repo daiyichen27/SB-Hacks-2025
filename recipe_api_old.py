@@ -1,50 +1,44 @@
-import json
-import urllib.request
-import datetime
-import time
+from flask import Flask, request, jsonify
+import requests
+import os
+from flask_cors import CORS
 
-class RateLimitedRequester:
-    '''
-    All HTTP requests throughout the program use this class. The variable
-    self._last_call keeps track of the last call to the API to ensure the API's 
-    terms of usage is followed. 
-    '''
-    def __init__(self, rate_limit_seconds = 1.0):
-        self._last_call = None
-        self._rate_limit_seconds = rate_limit_seconds
+app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
-    def get(self, params: dict):
-        url = "https://api.spoonacular.com/recipes/findByIngredients"
-        current_time = datetime.datetime.now()
-        if self._last_call:
-            if (current_time - self._last_call).seconds < self._rate_limit_seconds:
-                # print(f"Sleeping {self._rate_limit_seconds} seconds") # TODO: Remove print
-                time.sleep(self._rate_limit_seconds)
+# Get API key from environment variable
+SPOONACULAR_API_KEY = os.getenv("SPOONACULAR_API_KEY")
+if not SPOONACULAR_API_KEY:
+    raise ValueError("SPOONACULAR_API_KEY environment variable is not set")
 
-        self._last_call = current_time
+@app.route('/fridgecheck', methods=['GET'])
+def search_by_ingredients():
+    # Get ingredients from query parameter
+    ingredients = request.args.get('ingredients')
+    if not ingredients:
+        return jsonify({"error": "No ingredients provided"}), 400
 
-        formatted_params = ""
-        if params:
-            formatted_params = urllib.parse.urlencode(params)
-        formatted_url = url
-        if formatted_params:
-            formatted_url = f"{url}?{formatted_params}"
-        # print(formatted_url)
-
-        # APIKey: a52060d5687c4ccda3426ec492841a30
-        headers = {"x-api-key": "a52060d5687c4ccda3426ec492841a30"}        
-        request = urllib.request.Request(formatted_url, headers=headers)
-        # request = urllib.request.Request(formatted_url)
-        print(formatted_url)
-        response = urllib.request.urlopen(request)
-
-        response_data = response.read()
-        # print(response_data)
-
-        return json.loads(response_data)
+    # Spoonacular API endpoint
+    url = "https://api.spoonacular.com/recipes/findByIngredients"
     
+    # Headers for the API request
+    headers = {
+        'x-api-key': SPOONACULAR_API_KEY
+    }
+    
+    # Parameters for the API request
+    params = {
+        'ingredients': ingredients,
+        'number': 10,  # Number of results to return
+        'ranking': 2,  # Maximize used ingredients
+    }
+
+    try:
+        response = requests.get(url, params=params, headers=headers)
+        response.raise_for_status()  # Raise an exception for error status codes
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    new_request = RateLimitedRequester()
-    params = {"ingredients": "apples,flour,sugar", "number": "2"}
-    print(new_request.get(params))
+    app.run(debug=True, port=5000)

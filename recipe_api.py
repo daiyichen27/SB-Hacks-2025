@@ -3,6 +3,8 @@ import datetime
 import time
 import urllib.request
 import json
+from flask import Flask,render_template, request, jsonify
+
 
 class RateLimitedRequester:
     '''
@@ -36,6 +38,9 @@ class RateLimitedRequester:
         return response.json()
 
 if __name__ == '__main__':
+    # app.run(debug=True)
+
+
     new_request = RateLimitedRequester()
     
     input_url = "https://inputdata"
