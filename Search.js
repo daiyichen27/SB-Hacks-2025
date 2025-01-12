@@ -12,11 +12,10 @@ window.onload = function() {
 };
 
 function getData() {
-    var data;
-    readTextFile("https://github.com/daiyichen27/SB-Hacks-2025/blob/main/test.json", function(text){
-        data = JSON.parse(text);
+    var jsonData;
+    $.getJSON('https://github.com/daiyichen27/SB-Hacks-2025/blob/main/test.json', function(jsonData) {
     });
-    console.log(data);
+    var data = JSON.parse(jsonData);
     for (const recipe of data) {
         const ingredients = [];
         for (const ingredient of recipe.ingredients) {
@@ -28,16 +27,15 @@ function getData() {
 
 function onSubmit() {
     index = 0;
-    input = document.getElementById("ingredients").textContent;
+    input = document.getElementById("ingredients").value;
     input.replace(/\s/g, '');
 
     $.ajax({
         type: "POST",
-        url: "https:/inputdata",
+        url: "https://inputdata",
         data: { "input": input },
         dataType: "json"
     });
-    console.log('input posted');
     $.ajax({
         url: "https://github.com/daiyichen27/SB-Hacks-2025/blob/main/recipe_api.py",
     });
@@ -82,16 +80,4 @@ function printMore() {
             index++;
         }
     }
-}
-
-function readTextFile(file, callback) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.overrideMimeType("application/json");
-    rawFile.open("GET", file, true);
-    rawFile.onreadystatechange = function() {
-        if (rawFile.readyState === 4 && rawFile.status == "200") {
-            callback(rawFile.responseText);
-        }
-    }
-    rawFile.send(null);
 }
