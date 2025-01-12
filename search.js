@@ -22,11 +22,11 @@ async function onSubmit() {
     input = input.replace(/[\s\n]/g, '');
 
     await $.ajax({
-        type: "POST",
+        type: "GET",
         url: "/fridgecheck",
-        data: {'data': input},
-        success: function(jsonData) {
-            getData(jsonData);
+        data: {'ingredients': input},
+        success: function(response) {
+            getData(response.result);
         }
     });
     for (const recipe of data.recipes) {
