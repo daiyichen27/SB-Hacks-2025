@@ -1,5 +1,6 @@
 let recipes = new Map();
 let foodScore = new Array();
+var data;
 var input;
 var index;
 
@@ -11,51 +12,49 @@ window.onload = function() {
     }
 };
 
-function getData() {
-    const jsonName = "./test.json";
-    const data = requirejs(jsonName);
-    for (const recipe of data) {
-        const ingredients = [];
-        for (const ingredient of recipe.ingredients) {
-            ingredients.push(ingredient.name.split(' ').join('').toLowerCase());
-        }
-        recipes.set(recipe.title, ingredients);
-    }
+async function getData() {
+    const url = 'https://raw.githubusercontent.com/daiyichen27/SB-Hacks-2025/refs/heads/main/test.json';
+    data = $.getJSON(url, function() {
+        console.log("success");
+    });
 }
 
-function onSubmit() {
+async function onSubmit() {
     index = 0;
-    input = document.getElementById("ingredients").textContent;
+    input = document.getElementById("ingredients").value;
     input.replace(/\s/g, '');
 
     $.ajax({
         type: "POST",
-        url: "https:/inputdata",
+        url: "https://inputdata",
         data: { "input": input },
         dataType: "json"
     });
     $.ajax({
-        type: "POST",
-        url: "./recipe_api.py",
-        data: { param: input },
+        url: "https://github.com/daiyichen27/SB-Hacks-2025/blob/main/recipe_api.py?raw=true",
     });
-    $(document).ajaxSuccess(function(){
-        getData();
-        checkFoods();
-        foodScore.sort(function(a, b) {
-            return a[1] - b[1];
-        });
-
-        while (index < 10) {
-            let info = document.createElement("p");
-            info.innerText = foodScore[index][0] + " " + (foodScore[index][1].toPrecision(3)*100) + "%";
-            document.body.appendChild(info);
-            index++;
+    await getData();
+    for (const recipe of data) {
+        const ingredients = new Array();
+        for (const ingredient of recipe.ingredients) {
+            ingredients.push(ingredient.name);
         }
-
-        let getMoreButton = document.getElementById("getMore");
-        getMoreButton.hidden = false;
+        recipes.set(recipe.title, ingredients);
+    }
+    checkFoods();
+    foodScore.sort(function(a, b) {
+        return a[1] - b[1];
     });
+
+    while (index < 10) {
+        let info = document.createElement("p");
+        info.innerText = foodScore[index][0] + " " + (foodScore[index][1].toPrecision(3)*100) + "%";
+        document.body.appendChild(info);
+        index++;
+    }
+
+    let getMoreButton = document.getElementById("getMore");
+    getMoreButton.hidden = false;
 }
 
 function checkFoods() {
