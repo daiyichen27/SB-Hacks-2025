@@ -19,8 +19,8 @@ window.onload = function() {
 
 
 async function getData() {
-    const url = 'https://raw.githubusercontent.com/daiyichen27/SB-Hacks-2025/refs/heads/main/test.json';
-    data = $.getJSON(url, function() {
+    const url = 'https://frontend.slacker.dev/fridge/test.json';
+    data = await $.getJSON(url, function() {
         console.log("success");
     });
 }
@@ -36,11 +36,14 @@ async function onSubmit() {
         data: { "input": input },
         dataType: "json"
     });
+    /*
     $.ajax({
         url: "https://github.com/daiyichen27/SB-Hacks-2025/blob/main/recipe_api.py?raw=true",
     });
+    */
     await getData();
-    for (const recipe of data) {
+    console.log(data);
+    for (const recipe of data.recipes) {
         const ingredients = new Array();
         for (const ingredient of recipe.ingredients) {
             ingredients.push(ingredient.name);
@@ -49,7 +52,7 @@ async function onSubmit() {
     }
     checkFoods();
     foodScore.sort(function(a, b) {
-        return a[1] - b[1];
+        return b[1] - a[1];
     });
 
     while (index < 10) {
