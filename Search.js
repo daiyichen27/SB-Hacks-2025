@@ -11,36 +11,24 @@ window.onload = function() {
         onSubmit();
     }
 };
-<script>
-    fetch("https://frontend.slacker.dev/fridge/test.json")
-        .then()
 
-</script>
-
-
-async function getData() {
-    const url = 'https://frontend.slacker.dev/fridge/test.json';
-    data = await $.getJSON(url, function() {
-        console.log("success");
-    });
+async function getData(jsonData) {
+    data = JSON.parse(jsonData);
 }
 
 async function onSubmit() {
     index = 0;
     input = document.getElementById("ingredients").value;
     input = input.replace(/[\s\n]/g, '');
-    console.log(input);
 
     await $.ajax({
         type: "POST",
-        url: "https://inputdata",
-        data: input,
-        dataType: "text"
+        url: "/fridgecheck",
+        data: {'data': input},
+        success: function(jsonData) {
+            getData(jsonData);
+        }
     });
-    await $.ajax({
-        url: "./recipe_api.py",
-    });
-    await getData();
     for (const recipe of data.recipes) {
         const ingredients = new Array();
         for (const ingredient of recipe.ingredients) {
@@ -55,7 +43,9 @@ async function onSubmit() {
 
     while (index < foodScore.length && index < 10) {
         let info = document.createElement("p");
-        info.innerText = foodScore[index][0] + " " + (foodScore[index][1].toPrecision(3)*100) + "%";
+        info.innerText = foodScore[index][0] + " " 
+                        + (foodScore[index][1].toPrecision(3)*100) + "%"
+                        + " of ingredients";
         document.body.appendChild(info);
         index++;
     }
