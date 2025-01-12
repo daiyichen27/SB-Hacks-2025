@@ -4,7 +4,7 @@ var data;
 var input;
 var index;
 
-var requirejs = require(['https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js'], function (requirejs) {});
+// var requirejs = require(['https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js'], function (requirejs) {});
 
 window.onload = function() {
     document.getElementById("submit").onclick = function fun() {
