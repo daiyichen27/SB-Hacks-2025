@@ -28,6 +28,7 @@ async function onSubmit() {
         // http://127.0.0.1:5000/fridgecheck
         data: {'ingredients': input},
         success: function(jsonData) {
+            
             getData(jsonData.result);
         }
     });
