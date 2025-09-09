@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <title>Fridge Check</title>
   <style>
-    /* Body background */
     body {
       font-family: "Copperplate", "Copperplate Gothic Bold", fantasy;
-      background-color: #f0f0f0; /* slate white */
+      background-color: #98BBEB; /* light blue */
       margin: 0;
       padding: 0;
       text-align: center;
@@ -25,13 +24,12 @@
       text-align: center;
     }
 
-    /* Title styling */
     .title-block h1 {
       font-size: 60px;
       margin: 0;
       font-weight: bold;
-      color: gray; /* gray text */
-      text-shadow: 3px 3px 5px black; /* black shadow */
+      color: gray;
+      text-shadow: 3px 3px 5px black;
     }
 
     .slogan {
@@ -45,10 +43,10 @@
 
     nav {
       position: absolute;
-      left: 40px;
+      left: 120px;
       bottom: 10px;
       display: flex;
-      gap: 60px; /* large gap between links */
+      gap: 60px;
     }
 
     nav a {
@@ -82,12 +80,11 @@
       flex-wrap: wrap;
     }
 
-    /* Step boxes */
     .step {
       border: 2px solid #555;
       padding: 10px;
       width: 220px;
-      height: 260px; /* slightly shorter */
+      height: 260px;
       background-color: #fff;
       display: flex;
       flex-direction: column;
@@ -97,18 +94,17 @@
       box-sizing: border-box;
     }
 
-    /* Step images */
     .step img {
       max-height: 100px;
       width: auto;
       height: auto;
-      object-fit: contain; /* prevent stretching */
+      object-fit: contain;
       margin-bottom: 8px;
     }
 
     .step h3 {
       font-size: 16px;
-      margin: 6px 0 10px; /* spacing between heading and paragraph */
+      margin: 6px 0 10px;
     }
 
     .step p {
@@ -134,7 +130,7 @@
       border-radius: 10px;
       cursor: pointer;
       width: 300px;
-      margin: 0 auto;
+      margin: 0 auto 30px auto;
     }
 
     .upload-icon {
@@ -146,6 +142,37 @@
       margin: 10px 0 5px;
     }
 
+    .ingredient-input {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center; /* centers horizontally */
+      align-items: center;     /* aligns input + button vertically */
+      gap: 10px;               /* space between input and button */
+    }
+    .ingredient-input input {
+      width: 60%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #555;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+
+    .ingredient-input button {
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      background-color: #333;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .ingredient-input button:hover {
+      background-color: #555;
+    }
+
     footer {
       margin-top: 50px;
       padding: 20px;
@@ -153,26 +180,6 @@
       border-top: 2px solid #333;
       font-size: 14px;
       color: #555;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-      header {
-        padding: 20px 15px;
-      }
-      .step {
-        width: 90%;
-        height: auto;
-      }
-      nav {
-        position: static;
-        margin-top: 15px;
-        gap: 20px;
-      }
-      .est {
-        position: static;
-        margin-top: 10px;
-      }
     }
   </style>
 </head>
@@ -186,7 +193,6 @@
 
     <nav>
       <a href="about.html">About us</a>
-      <a href="contact.html">Contact</a>
     </nav>
 
     <div class="est">EST. 2025</div>
@@ -226,6 +232,12 @@
       <p class="upload-text">Click to Upload Fridge Photo</p>
       <p>(or drag and drop)</p>
     </div>
+
+    <p>OR ENTER INGREDIENTS:</p>
+<div class="ingredient-input">
+  <input type="text" placeholder="e.g. eggs, milk, cheese">
+  <button onclick="alert('Ingredient search would run here')">Submit</button>
+</div>
   </section>
 
   <footer>
@@ -233,4 +245,3 @@
   </footer>
 </body>
 </html>
-
